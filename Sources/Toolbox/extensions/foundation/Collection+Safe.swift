@@ -1,0 +1,125 @@
+//
+//  Collection+Safe.swift
+//
+//  Created  on 9/5/19.
+//  Copyright ©. All rights reserved.
+//
+
+import Foundation
+
+public extension Collection {
+    
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
+@available(iOS 13.0, *)
+public extension Array where Element: Identifiable {
+    
+    func element(match: Element.ID) -> (value: Element, index: Self.Index)? {
+        if let x = firstIndex(where: { $0.id == match }) {
+            return (self[x], x)
+        }
+        
+        return nil
+    }
+    
+    func updated( match: Element.ID, update: (inout Element) -> Void ) -> Array<Element> {
+        
+        if let (value, index) = element(match: match) {
+            var accounts = self
+            var element = value
+            update(&element)
+            accounts[index] = element
+            
+            return accounts
+        }
+        
+        return self
+    }
+    
+    mutating func update( match: Element.ID, update: (inout Element) -> Void ) {
+        self = self.updated(match: match, update: update)
+    }
+    
+}
+
+public extension Array {
+
+    func pairs() -> [(Element, Element?)] {
+        var result = [(Element, Element?)]()
+        var i = 0
+        while let x = self[safe: i] {
+            result.append( (x, self[safe: i+1] ) )
+            i+=2
+        }
+        return result
+    }
+}
+
+public extension Dictionary {
+    
+    func retreive(ids: [Key] ) -> [Value] {
+        ids.compactMap { id in
+            
+            guard let x = self[id] else {
+                #if DEBUG
+                    print("Inconsistent state, trying to access \(id) that does not exist in store")
+                #endif
+                return nil
+            }
+             
+            return x
+            
+        }
+    }
+    
+}
+
+public extension Array where Element: Identifiable {
+    
+    func retreive(ids: [Element.ID] ) -> [Element] {
+        ids.compactMap { id in
+            
+            guard let x = self.element(match: id)?.value else {
+                #if DEBUG
+                    print("Inconsistent state, trying to access \(id) that does not exist in store")
+                #endif
+                return nil
+            }
+             
+            return x
+            
+        }
+    }
+ 
+    subscript (matching index: Element.ID) -> Element? {
+        return element(match: index)?.value
+    }
+    
+}
+
+public extension Set {
+    
+    mutating func invert(element: Element) {
+        if contains(element) {
+            remove(element)
+        } else {
+            insert(element)
+        }
+    }
+    
+}
+
+public extension Array {
+    
+    func dayGroupped(_ map: (Element) -> Date ) -> [[Element]] {
+        let res = Dictionary(grouping: self,
+                             by: { Int( map($0).timeIntervalSince1970) / (24 * 60 * 60) })
+                      .sorted { (lhs, rhs) in lhs.key > rhs.key }
+        
+        return res.map { $0.value }
+    }
+}
