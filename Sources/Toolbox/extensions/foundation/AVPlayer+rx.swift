@@ -14,30 +14,13 @@ import AVFoundation
 
 public extension Reactive where Base == AVPlayer {
     
-    func playbackTimeFor(time: CMTime) -> Observable<CMTime> {
+    var timeObserver: Observable<CMTime> {
         
         return Observable.create { (subscriber) -> Disposable in
             
-            let duration = CMTimeGetSeconds(time)
-            
-            guard duration > 0 else {
-                subscriber.onNext(CMTime.zero)
-                return Disposables.create()
-            }
-            
-            /*
-             * timescale use for pereodic update
-             */
-            
-            var interval = duration / 75;
-            
-            if interval > 1 {
-                interval = 0.99
-            }
-            
-            let observer = self.base.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5,
-                                                                                 preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
-                                                        queue: DispatchQueue.main) { (x) in
+            let observer = self.base.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1,
+                                                                                     timescale: 30),
+                                                             queue: DispatchQueue.main) { (x) in
                 subscriber.onNext(x)
             }
             
@@ -48,7 +31,7 @@ public extension Reactive where Base == AVPlayer {
         }
         
     }
-    
+
     var playRate: Observable<Float> {
         return base.rx.observe(Float.self, "rate")
                     .startWith(base.rate)
