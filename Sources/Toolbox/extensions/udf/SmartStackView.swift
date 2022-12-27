@@ -15,6 +15,11 @@ public class SmartStackView: UIStackView {
         public var spacing: CGFloat = 8
         public let stack: [StackableProp]
         
+        public init(spacing: CGFloat = 8, stack: [StackableProp]) {
+            self.spacing = spacing
+            self.stack = stack
+        }
+        
         public static var initial: Props { .init(stack: []) }
         
     }; public var props: Props = .initial {
