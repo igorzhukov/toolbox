@@ -103,10 +103,15 @@ public extension BaseRequest {
                                form: ((MultipartFormData) -> Void)?,
                                encoding: (inout URLRequest) throws -> Void ) ->  ConcreteRequest<T> {
      
-        guard let url = try? baseURL?.asURL() ?? (try? appConfig.network?.baseNetworkURL.asURL()) else {
+        guard var url = try? baseURL?.asURL() ?? (try? appConfig.network?.baseNetworkURL.asURL()) else {
             fatalError("Can't make requests without base URL. Please provide one in AppConfig")
         }
-        var request = URLRequest(url: url.appendingPathComponent(path))
+        
+        if !path.isEmpty {
+            url = url.appendingPathComponent(path)
+        }
+        
+        var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.timeoutInterval = 30
         
