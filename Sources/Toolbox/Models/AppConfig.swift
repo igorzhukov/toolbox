@@ -20,9 +20,9 @@ public enum App {
         public typealias CustomErrorMapper = (Error, Data) -> Error?
         
         public init(loaderImage: UIImage = UIImage(named: "spring_indicator")!,
-                    customError: @escaping CustomErrorPresentation,
-                    debugShakeCommands: [NamedCommand],
-                    reduxActionDispatched: CommandWith<String>,
+                    customError: @escaping CustomErrorPresentation = { _ in nil },
+                    debugShakeCommands: [NamedCommand] = [],
+                    reduxActionDispatched: CommandWith<String> = .nop,
                     network: Network?) {
             self.loaderImage = loaderImage
             self.customError = customError
@@ -43,10 +43,10 @@ public enum App {
         public struct Network {
             public init(
                 baseNetworkURL: URLConvertible,
-                networkEncoder: JSONEncoder,
-                networkDecoder: JSONDecoder,
-                authRequestHeaders: AuthRequestHeaders?,
-                customErrorMapper: CustomErrorMapper?) {
+                networkEncoder: JSONEncoder = .init(),
+                networkDecoder: JSONDecoder = .init(),
+                authRequestHeaders: AuthRequestHeaders? = nil,
+                customErrorMapper: CustomErrorMapper? = nil) {
                     self.baseNetworkURL = baseNetworkURL
                     self.networkEncoder = networkEncoder
                     self.networkDecoder = networkDecoder
