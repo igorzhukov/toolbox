@@ -10,9 +10,9 @@ import AVFoundation
 
 public struct LocalVideo {
     
-    let url: URL
-    let aspectRatio: CGFloat
-    let duration: TimeInterval
+    public let url: URL
+    public let aspectRatio: CGFloat
+    public let duration: TimeInterval
     
 }
 
