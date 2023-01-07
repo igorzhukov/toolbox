@@ -8,17 +8,25 @@
 import UIKit
 import AVFoundation
 
+public struct LocalVideo {
+    
+    let url: URL
+    let aspectRatio: CGFloat
+    let duration: TimeInterval
+    
+}
+
 public class VideoPicker {
 
-    private var completion: CommandWith<URL> = .nop
+    private var completion: CommandWith<LocalVideo> = .nop
     
     public static func present(on viewController: UIViewController,
-                               completion: CommandWith<URL>) {
+                               completion: CommandWith<LocalVideo>) {
 
-        VideoSharedPicker.shared.pick(controller: viewController) { (url) in
+        VideoSharedPicker.shared.pick(controller: viewController) { (video) in
             
             DispatchQueue.main.async {
-                completion(with: url)
+                completion(with: video)
             }
             
         }
@@ -31,11 +39,11 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
     
     public static var shared = VideoSharedPicker()
     
-    var successBlock: ((URL) -> ())!
+    var successBlock: ((LocalVideo) -> ())!
     
     public func pick(
               controller: UIViewController,
-              successBlock success: @escaping ((URL) -> ()))
+              successBlock success: @escaping ((LocalVideo) -> ()))
     {
         
         let x = UIImagePickerController()
@@ -62,10 +70,12 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
             return
         }
         
-//        let size = track.naturalSize.applying(track.preferredTransform)
-//        let aspectRaio: CGFloat = size.width / size.height
+        let size = track.naturalSize.applying(track.preferredTransform)
+        let aspectRaio: CGFloat = size.width / size.height
+
+        let duration = AVURLAsset(url: videoURL).duration.seconds
         
-        successBlock(videoURL)
+        successBlock( .init(url: videoURL, aspectRatio: aspectRaio, duration: duration) )
     }
     
 }
