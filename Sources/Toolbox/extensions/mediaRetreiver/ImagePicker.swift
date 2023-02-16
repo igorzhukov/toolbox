@@ -18,12 +18,12 @@ public class ImagePicker {
                                allowsEditing: Bool = false,
                                completion: CommandWith<UIImage>) {
 
-        PhotoPicker.shared.pick(allowsEditing: allowsEditing, pickerSourceType: .CameraAndPhotoLibrary, controller: viewController) { (originalPhoto, editedPhoto) in
+        PhotoPicker.shared.pick(allowsEditing: allowsEditing, pickerSourceType: .CameraAndPhotoLibrary, controller: viewController) { [weak container = viewController] (originalPhoto, editedPhoto) in
             
             let photo = editedPhoto ??  originalPhoto!
             
             if let p = processor {
-                viewController.view.indicateProgress = true
+                container?.view.indicateProgress = true
                 DispatchQueue.global().async {
                     let res = p.process(item: .image(photo),
                                         options: .init(nil))!
@@ -31,7 +31,7 @@ public class ImagePicker {
                     
                     DispatchQueue.main.async {
                         completion(with: x)
-                        viewController.view.indicateProgress = false
+                        container?.view.indicateProgress = false
                     }
                 }
                 
