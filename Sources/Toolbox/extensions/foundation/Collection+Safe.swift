@@ -118,7 +118,7 @@ public extension Array {
     func dayGroupped(_ map: (Element) -> Date ) -> [[Element]] {
         let res = Dictionary(grouping: self,
                              by: { Int( map($0).timeIntervalSince1970) / (24 * 60 * 60) })
-                      .sorted { (lhs, rhs) in lhs.key < rhs.key }
+                      .sorted { (lhs, rhs) in lhs.key > rhs.key }
         
         return res.map { $0.value }
     }
