@@ -1031,7 +1031,7 @@ public extension Date {
 
 #endif
 
-extension Date {
+public extension Date {
     func daysBetween(date: Date) -> Int {
         let calendar = Calendar.current
         let date1 = calendar.startOfDay(for: self)
@@ -1064,7 +1064,7 @@ extension Date {
     }
 }
 
-extension Date {
+public extension Date {
     
     static func timeFormatter( units: NSCalendar.Unit = [.minute, .hour, .day] ) -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
