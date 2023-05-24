@@ -1063,3 +1063,28 @@ extension Date {
         return dateFormatter.string(from: self).capitalized
     }
 }
+
+extension Date {
+    
+    static func timeFormatter( units: NSCalendar.Unit = [.minute, .hour, .day] ) -> DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = units
+        formatter.unitsStyle = .full
+        formatter.maximumUnitCount = 1
+        return formatter
+    }
+    
+    func whenForHuman( units: NSCalendar.Unit = [.minute, .hour, .day] ) -> String {
+        
+        let tf = Date.timeFormatter(units: units)
+        
+        if self < Date() {
+            return tf.string(from: self, to: Date()).map { "\($0) ago" }!
+        } else if self > Date() {
+            return tf.string(from: Date(), to: self).map { "in \($0)" }!
+        } else {
+            return "now"
+        }
+    }
+    
+}
