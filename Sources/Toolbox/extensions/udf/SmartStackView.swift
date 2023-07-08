@@ -42,7 +42,6 @@ public class SmartStackView: UIStackView {
         props.stack
             .map(\.nibView)
             .forEach { x in
-                x.isLayoutMarginsRelativeArrangement = true
                 x.layoutMargins = .init(top: 0, left: props.margins,
                                         bottom: 0, right: props.margins)
                 addArrangedSubview(x)
