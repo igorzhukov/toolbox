@@ -16,8 +16,9 @@ public class SmartStackView: UIStackView {
         public var margins: CGFloat = 0
         public let stack: [StackableProp]
         
-        public init(spacing: CGFloat = 8, stack: [StackableProp]) {
+        public init(spacing: CGFloat = 8, margins: CGFloat = 0, stack: [StackableProp]) {
             self.spacing = spacing
+            self.margins = margins
             self.stack = stack
         }
         
