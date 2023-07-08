@@ -123,3 +123,18 @@ public extension Array {
         return res.map { $0.value }
     }
 }
+
+extension Array {
+    
+    @inlinable public subscript(safe r: ClosedRange<Self.Index>) -> Self.SubSequence {
+        
+        guard self.indices.contains(r.lowerBound) else { return SubSequence() }
+        
+        guard self.indices.contains(r.upperBound) else {
+            return self.suffix(from: r.lowerBound)
+        }
+        
+        return self[r]
+    }
+    
+}
