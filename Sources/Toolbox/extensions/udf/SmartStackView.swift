@@ -14,11 +14,14 @@ public class SmartStackView: UIStackView {
         
         public var spacing: CGFloat = 8
         public var margins: CGFloat = 0
+        public var axis: NSLayoutConstraint.Axis = .vertical
         public let stack: [StackableProp]
         
-        public init(spacing: CGFloat = 8, margins: CGFloat = 0, stack: [StackableProp]) {
+        public init(spacing: CGFloat = 8, margins: CGFloat = 0,
+                    axis: NSLayoutConstraint.Axis = .vertical, stack: [StackableProp]) {
             self.spacing = spacing
             self.margins = margins
+            self.axis = axis
             self.stack = stack
         }
         
@@ -33,6 +36,7 @@ public class SmartStackView: UIStackView {
     func render() {
         
         self.spacing = props.spacing
+        axis = props.axis
         
         arrangedSubviews.forEach { $0.removeFromSuperview() }
         props.stack
