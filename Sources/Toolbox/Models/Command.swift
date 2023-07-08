@@ -177,10 +177,10 @@ public extension UIViewController {
 }
 
 public struct Selectable<T> {
-    let data: T
-    let command: CommandWith<T>
+    public let data: T
+    public let command: CommandWith<T>
     
-    func select() {
+    public func select() {
         command.perform(with: data)
     }
     
