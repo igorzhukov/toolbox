@@ -13,6 +13,7 @@ public class SmartStackView: UIStackView {
     public struct Props {
         
         public var spacing: CGFloat = 8
+        public var margins: CGFloat = 0
         public let stack: [StackableProp]
         
         public init(spacing: CGFloat = 8, stack: [StackableProp]) {
@@ -35,7 +36,11 @@ public class SmartStackView: UIStackView {
         arrangedSubviews.forEach { $0.removeFromSuperview() }
         props.stack
             .map(\.nibView)
-            .forEach(addArrangedSubview)
+            .forEach { x in
+                x.layoutMargins.left = props.margins
+                x.layoutMargins.right = props.margins
+                addArrangedSubview(x)
+            }
         
     }
     
@@ -53,8 +58,6 @@ public class SmartStackView: UIStackView {
     }
     
     func setUp() {
-        self.alignment = .fill
-        self.axis = .vertical
         
         isLayoutMarginsRelativeArrangement = true
         
