@@ -114,7 +114,7 @@ public extension CLLocationCoordinate2D {
 }
 
 
-extension UIImage {
+public extension UIImage {
     
     func cache(for key: String) {
         KingfisherManager.shared.cache.store(self, forKey: key)
