@@ -112,3 +112,16 @@ public extension CLLocationCoordinate2D {
         String(format: "%.5f", longitude)
     }
 }
+
+
+extension UIImage {
+    
+    func cache(for key: String) {
+        KingfisherManager.shared.cache.store(self, forKey: key)
+    }
+    
+    static func removeFromCache(key: String) {
+        KingfisherManager.shared.cache.removeImage(forKey: key)
+    }
+    
+}
