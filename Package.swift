@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/SnapKit/SnapKit", branch: "main"),
         .package(url: "https://github.com/onevcat/Kingfisher", branch: "master"),
         .package(url: "https://github.com/Alamofire/Alamofire", branch: "master"),
-        .package(url: "https://github.com/mac-cain13/R.swift.Library", branch: "master")
+//        .package(url: "https://github.com/mac-cain13/R.swift.Library", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -30,7 +30,7 @@ let package = Package(
                 .productItem(name: "SnapKit", package: "SnapKit", condition: nil),
                 .productItem(name: "Kingfisher", package: "Kingfisher", condition: nil),
                 .productItem(name: "Alamofire", package: "Alamofire", condition: nil),
-                .productItem(name: "Rswift", package: "R.swift.Library", condition: nil)
+//                .productItem(name: "Rswift", package: "R.swift.Library", condition: nil)
             ]),
     ]
 )
