@@ -33,7 +33,7 @@ public class EmptyView: UIView {
      * @discussion - you can also enable/disable animation manually
      */
     
-    var isEmpty: Bool = false {
+    public var isEmpty: Bool = false {
         didSet {
             
             UIView.animate(withDuration: 0.3) {
@@ -42,7 +42,7 @@ public class EmptyView: UIView {
         }
     }
     
-    var emptyView: UIView? {
+    public var emptyView: UIView? {
         didSet {
             subviews.forEach { $0.removeFromSuperview() }
             
@@ -58,7 +58,7 @@ public class EmptyView: UIView {
         }
     }
     
-    var rx: Reactive<EmptyView> {
+    public var rx: Reactive<EmptyView> {
         return Reactive(self)
     }
 }
