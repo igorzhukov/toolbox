@@ -180,8 +180,21 @@ public struct Selectable<T> {
     public let data: T
     public let command: CommandWith<T>
     
+    public init(data: T, command: CommandWith<T>) {
+        self.data = data
+        self.command = command
+    }
+    
     public func select() {
         command.perform(with: data)
+    }
+    
+}
+
+public extension Selectable where T == Bool {
+    
+    func toggle() {
+        command.perform(with: !data)
     }
     
 }
