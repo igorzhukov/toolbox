@@ -15,7 +15,7 @@ public class SmartStackView: UIStackView {
         public var spacing: CGFloat = 8
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
-        public let keyboardJump: Bool = true
+        public let keyboardJump: Bool
         public let stack: [StackableProp]
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
