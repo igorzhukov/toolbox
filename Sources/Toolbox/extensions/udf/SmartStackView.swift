@@ -15,13 +15,16 @@ public class SmartStackView: UIStackView {
         public var spacing: CGFloat = 8
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
+        public let keyboardJump: Bool = true
         public let stack: [StackableProp]
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
-                    axis: NSLayoutConstraint.Axis = .vertical, stack: [StackableProp]) {
+                    axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool,
+                    stack: [StackableProp]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
+            self.keyboardJump = keyboardJump
             self.stack = stack
         }
         
@@ -74,6 +77,8 @@ public class SmartStackView: UIStackView {
                 (current, current - prev)
             }
             .bind { [unowned self] (h, dh) in
+                guard self.props.keyboardJump else { return; }
+                
                 self.layoutMargins.bottom = h
                 if let sv = superview as? UIScrollView,
                     dh > 0 {
