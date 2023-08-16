@@ -44,6 +44,15 @@ public extension Array where Element: Identifiable {
         self = self.updated(match: match, update: update)
     }
     
+    ///updates or appneds into tail
+    mutating func upsert( element: Element ) {
+        if let (_, i) = self.element(match: element.id) {
+            self[i] = element
+        } else {
+            append(element)
+        }
+    }
+    
 }
 
 public extension Array {
