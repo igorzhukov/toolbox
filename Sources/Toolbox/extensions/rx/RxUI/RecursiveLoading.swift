@@ -8,7 +8,7 @@
 
 import RxSwift
 
-func recursivelyLoad<DataType, T>(_ loadedSoFar: [DataType],
+public func recursivelyLoad<DataType, T>(_ loadedSoFar: [DataType],
                                nextPageTrigger: Observable<T>,
                                dataProvider: @escaping ([DataType]) -> Single<[DataType]>) -> Observable<[DataType]> {
 
