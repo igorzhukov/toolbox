@@ -14,11 +14,21 @@ public func recursivelyLoad<DataType, T>(_ loadedSoFar: [DataType],
 
     return dataProvider(loadedSoFar)
         .asObservable()
-        .map { loadedSoFar + $0 }
-        .flatMap { x -> Observable<[DataType]> in
-            return Observable.concat([ .just(x),
-                                       Observable.never().take(until: nextPageTrigger),
-                                       .deferred { recursivelyLoad(x, nextPageTrigger: nextPageTrigger, dataProvider: dataProvider) } ])
+        .flatMap { newBatch -> Observable<[DataType]> in
+            
+            if newBatch.isEmpty { return .empty() }
+            
+            let running = loadedSoFar + newBatch
+            
+            return Observable.concat([
+                .just(running),
+                Observable.never().take(until: nextPageTrigger),
+                .deferred {
+                    recursivelyLoad(running,
+                                    nextPageTrigger: nextPageTrigger,
+                                    dataProvider: dataProvider)
+                }
+            ])
         }
         
 }
