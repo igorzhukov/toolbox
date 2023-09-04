@@ -92,7 +92,7 @@ public extension BaseRequest {
     private func personilisedRequestBottleNeck( path: String,
                                                 headers: [String: String]?) async throws -> [String: String] {
         var headers = headers ?? [:]
-        appConfig.network?.authRequestHeaders?(&headers)
+        await appConfig.network?.authRequestHeaders?(&headers)
         return headers
     }
                

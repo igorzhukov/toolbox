@@ -16,7 +16,7 @@ public enum App {
 
     public struct StaticConfig {
         public typealias CustomErrorPresentation = (Error) -> (title: String, message: String)?
-        public typealias AuthRequestHeaders = (inout [String: String]) -> Void
+        public typealias AuthRequestHeaders = (inout [String: String]) async -> Void
         public typealias CustomErrorMapper = (Error, Data) -> Error?
         
         public init(loaderImage: UIImage = UIImage(named: "spring_indicator")!,
