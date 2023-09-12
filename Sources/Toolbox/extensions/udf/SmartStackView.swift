@@ -41,7 +41,7 @@ public class SmartStackView: UIStackView {
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
-                    aggressiveReload: Bool = false,
+                    aggressiveReload: Bool = true,
                     stack: [any StackableProp]) {
             self.spacing = spacing
             self.margins = margins
