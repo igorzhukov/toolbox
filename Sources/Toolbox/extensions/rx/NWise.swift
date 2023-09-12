@@ -26,6 +26,23 @@ public extension ObservableType {
     }
 }
 
+///https://www.youtube.com/watch?v=p3zo4ptMBiQ&t=2231s
+public protocol DynamicEquatable {
+    func isEqual(_ other: DynamicEquatable) -> Bool
+}
+extension DynamicEquatable where Self: Equatable {
+    func isEqual(_ other: DynamicEquatable) -> Bool {
+        if let o = other as? Self { return self == o }
+        return false
+    }
+}
+
+public protocol DynamicIdentifiable {
+    var id: String { get }
+}
+extension DynamicIdentifiable where Self: Identifiable {}
+
+
 public struct Diff<T> {
     public let removed: [T]
     public let added: [T]

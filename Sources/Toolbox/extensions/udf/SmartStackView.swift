@@ -4,6 +4,26 @@
 import UIKit
 import RxCocoa
 
+//public struct StackDiff {
+//
+//    public let removed: [any StackableProp]
+//    public let added: [any StackableProp]
+//
+//    public init(from: [any StackableProp], to: [any StackableProp]) {
+//
+//        let fromMap = Dictionary(uniqueKeysWithValues: from.map { ($0.id, $0) })
+//        let toMap   = Dictionary(uniqueKeysWithValues: to.map { ($0.id, $0) })
+//
+//        let fromSet = Set(fromMap.keys)
+//        let toSet = Set(toMap.keys)
+//
+//        removed = fromSet.subtracting(toSet).map { fromMap[$0]! }
+//        added = toSet.subtracting(fromSet).map { toMap[$0]! }
+//
+//    }
+//
+//}
+
 public protocol StackableProp {
     var nibView: UIView { get }
 }
@@ -16,15 +36,18 @@ public class SmartStackView: UIStackView {
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
         public let keyboardJump: Bool
-        public let stack: [StackableProp]
+        public let aggressiveReload: Bool
+        public let stack: [any StackableProp]
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
-                    stack: [StackableProp]) {
+                    aggressiveReload: Bool = false,
+                    stack: [any StackableProp]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
             self.keyboardJump = keyboardJump
+            self.aggressiveReload = aggressiveReload
             self.stack = stack
         }
         
@@ -32,18 +55,22 @@ public class SmartStackView: UIStackView {
         
     }; public var props: Props = .initial {
         didSet {
-            render()
+            render(oldValue: oldValue)
         }
     }
     
-    func render() {
+    func render(oldValue: Props) {
         
         self.spacing = props.spacing
         axis = props.axis
-        
-        arrangedSubviews.forEach { $0.removeFromSuperview() }
         layoutMargins = .init(top: 0, left: props.margins,
                               bottom: 0, right: props.margins)
+        
+        if props.aggressiveReload == false && oldValue.stack.count == props.stack.count {
+            return
+        }
+        
+        arrangedSubviews.forEach { $0.removeFromSuperview() }
         props.stack
             .map(\.nibView)
             .forEach { x in
@@ -91,7 +118,7 @@ public class SmartStackView: UIStackView {
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismiss)))
         
-        render()
+        render( oldValue: .initial )
     }
     
     @objc func dismiss() {
@@ -103,6 +130,7 @@ public class SmartStackView: UIStackView {
 extension SmartStackView.Props: StackableProp {
     public var nibView: UIView {
         let view = SmartStackView(props: self)
+        view.props = self
         return view
     }
 }
