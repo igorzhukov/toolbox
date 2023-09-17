@@ -26,8 +26,8 @@ public extension BaseRequest {
                              path: String,
                              headers: [String: String]? = nil,
                              params: Parameters? = nil,
-                             form: ((MultipartFormData) -> Void)? = nil,
-                             encoding: ParameterEncoding = JSONEncoding.default) -> ConcreteRequest<T> {
+                             encoding: ParameterEncoding = JSONEncoding.default,
+                             form: ((MultipartFormData) -> Void)? = nil) -> ConcreteRequest<T> {
         
         return bottleNeck(baseURL: baseURL, method: method, path: path, headers: headers, form: form) { (request) in
             request = try encoding.encode(request, with: params?.mapValues { x in
@@ -61,16 +61,16 @@ public extension BaseRequest {
                                 path: String,
                                 headers: [String: String]? = nil,
                                 params: Parameters? = nil,
-                                form: ((MultipartFormData) -> Void)? = nil,
-                                encoding: ParameterEncoding = JSONEncoding.default) async throws -> ConcreteRequest<T> {
+                                encoding: ParameterEncoding = JSONEncoding.default,
+                                form: ((MultipartFormData) -> Void)? = nil) async throws -> ConcreteRequest<T> {
         let signedHeaders = try await personilisedRequestBottleNeck(path: path, headers: headers)
         return self.anonymousRequest(baseURL: baseURL,
                                      method: method,
                                      path: path,
                                      headers: signedHeaders,
                                      params: params,
-                                     form: form,
-                                     encoding: encoding)
+                                     encoding: encoding,
+                                     form: form)
             
     }
     
