@@ -26,6 +26,8 @@ public extension Reactive where Base: UIImageView {
                 options.append( .processor( DownsamplingImageProcessor(size: x) ) )
             }
             
+            options.append(.requestModifier(TokenPlugin()))
+            
             guard let str = url, let url = URL(string: str) else {
                 self.base.image = placeholder
                 subscriber.onCompleted()
@@ -57,6 +59,28 @@ public extension Reactive where Base: UIImageView {
         }
     }
     
+}
+
+class TokenPlugin: AsyncImageDownloadRequestModifier {
+    var onDownloadTaskStarted: ((Kingfisher.DownloadTask?) -> Void)?
+    
+    func modified(for request: URLRequest, reportModified: @escaping (URLRequest?) -> Void) {
+        guard let auth = appConfig.network?.authRequestHeaders else {
+            return reportModified(request)
+        }
+        
+        Task {
+            var request = request
+            var headers: [String: String] = [:]
+            await auth(&headers)
+            for (key, value) in headers {
+                request.addValue(value, forHTTPHeaderField: key)
+            }
+            reportModified(request)
+        }
+        
+    }
+
 }
 
 public extension Reactive where Base: UIImageView {
