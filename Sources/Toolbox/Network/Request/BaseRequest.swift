@@ -132,11 +132,13 @@ public extension BaseRequest {
             fatalError("Error encoding request \(request) details - \(error)")
         }
         
+        let session = appConfig.network?.session ?? AF
+        
         if let form = form {
-            return ConcreteRequest(x: AF.upload(multipartFormData: form, with: request))
+            return ConcreteRequest(x: session.upload(multipartFormData: form, with: request))
         }
         
-        return ConcreteRequest(x: AF.request(request) )
+        return ConcreteRequest(x: session.request(request) )
     }
 }
 
