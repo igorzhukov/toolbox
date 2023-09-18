@@ -41,18 +41,15 @@ public class SmartStackView: UIStackView, StackableView {
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
         public let keyboardJump: Bool
-        public let aggressiveReload: Bool
         public let stack: [any StackableProp]
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
-                    aggressiveReload: Bool = true,
                     stack: [any StackableProp]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
             self.keyboardJump = keyboardJump
-            self.aggressiveReload = aggressiveReload
             self.stack = stack
         }
         
@@ -70,10 +67,6 @@ public class SmartStackView: UIStackView, StackableView {
         axis = props.axis
         layoutMargins = .init(top: 0, left: props.margins,
                               bottom: 0, right: props.margins)
-        
-        if props.aggressiveReload == false && oldValue.stack.count == props.stack.count {
-            return
-        }
         
         func superMap<T: StackableView, U: StackableProp>( view: inout T, prop: U) -> Bool {
             
