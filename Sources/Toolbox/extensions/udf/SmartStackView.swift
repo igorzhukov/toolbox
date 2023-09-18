@@ -33,7 +33,7 @@ public protocol StackableView {
     var props: T { get set }
 }
 
-public class SmartStackView: UIStackView {
+public class SmartStackView: UIStackView, StackableView {
 
     public struct Props {
         
