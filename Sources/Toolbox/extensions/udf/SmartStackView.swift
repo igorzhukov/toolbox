@@ -28,6 +28,11 @@ public protocol StackableProp {
     var nibView: UIView { get }
 }
 
+public protocol StackableView {
+    associatedtype T: StackableProp
+    var props: T { get set }
+}
+
 public class SmartStackView: UIStackView {
 
     public struct Props {
@@ -70,12 +75,35 @@ public class SmartStackView: UIStackView {
             return
         }
         
-        arrangedSubviews.forEach { $0.removeFromSuperview() }
-        props.stack
-            .map(\.nibView)
-            .forEach { x in
-                addArrangedSubview(x)
+        func superMap<T: StackableView, U: StackableProp>( view: inout T, prop: U) -> Bool {
+            
+            if let p = prop as? T.T {
+                view.props = p
+                return true
+            } else {
+                return false
             }
+        }
+        
+        var binded = true
+        for (view, prop) in zip(arrangedSubviews, props.stack) {
+            guard var x = view as? any StackableView else {
+                binded = false
+                break;
+            }
+            
+            binded = superMap(view: &x, prop: prop)
+            if !binded { break; }
+        }
+        
+        if binded == false {
+            arrangedSubviews.forEach { $0.removeFromSuperview() }
+            props.stack
+                .map(\.nibView)
+                .forEach { x in
+                    addArrangedSubview(x)
+                }
+        }
         
     }
     
