@@ -85,7 +85,7 @@ public class SmartStackView: UIStackView, StackableView {
             }
         }
         
-        var binded = true
+        var binded = false
         for (view, prop) in zip(arrangedSubviews, props.stack) {
             guard var x = view as? any StackableView else {
                 binded = false
