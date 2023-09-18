@@ -33,6 +33,27 @@ public protocol StackableView {
     var props: T { get set }
 }
 
+@resultBuilder
+public struct StackBuilder {
+    
+    static func buildBlock(_ components: (any StackableProp)?...) -> [any StackableProp] {
+        components.compactMap { $0 }
+    }
+    
+    static func buildEither(first component: [StackableProp]) -> [StackableProp] {
+        component
+    }
+    
+    static func buildEither(second component: [StackableProp]) -> [StackableProp] {
+        component
+    }
+    
+    static func buildOptional(_ component: [StackableProp]?) -> [StackableProp] {
+        component ?? []
+    }
+    
+}
+
 public class SmartStackView: UIStackView, StackableView {
 
     public struct Props {
@@ -45,15 +66,15 @@ public class SmartStackView: UIStackView, StackableView {
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
-                    stack: [any StackableProp]) {
+                    @StackBuilder stack: () -> [any StackableProp]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
             self.keyboardJump = keyboardJump
-            self.stack = stack
+            self.stack = stack()
         }
         
-        public static var initial: Props { .init(stack: []) }
+        public static var initial: Props { .init(stack: { } ) }
         
     }; public var props: Props = .initial {
         didSet {
