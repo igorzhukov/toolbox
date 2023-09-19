@@ -40,6 +40,10 @@ public struct StackBuilder {
         components.compactMap { $0 }
     }
     
+    public static func buildBlock(_ components: [StackableProp]...) -> [StackableProp] {
+        Array(components.joined())
+    }
+    
     static func buildEither(first component: [StackableProp]) -> [StackableProp] {
         component
     }
@@ -51,6 +55,8 @@ public struct StackBuilder {
     static func buildOptional(_ component: [StackableProp]?) -> [StackableProp] {
         component ?? []
     }
+    
+    
     
 }
 
