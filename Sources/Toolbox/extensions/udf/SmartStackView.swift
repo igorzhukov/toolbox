@@ -36,12 +36,12 @@ public protocol StackableView {
 @resultBuilder
 public struct StackBuilder {
     
-    static func buildBlock(_ components: (any StackableProp)?...) -> [any StackableProp] {
-        components.compactMap { $0 }
+    public static func buildExpression(_ expression: (any StackableProp)?) -> [any StackableProp] {
+        return expression.map { [$0] } ?? []
     }
     
-    public static func buildBlock(_ components: [StackableProp]...) -> [StackableProp] {
-        Array(components.joined())
+    static func buildBlock(_ components: [any StackableProp]...) -> [any StackableProp] {
+        components.flatMap { $0 }
     }
     
     static func buildEither(first component: [StackableProp]) -> [StackableProp] {
@@ -55,8 +55,6 @@ public struct StackBuilder {
     static func buildOptional(_ component: [StackableProp]?) -> [StackableProp] {
         component ?? []
     }
-    
-    
     
 }
 
