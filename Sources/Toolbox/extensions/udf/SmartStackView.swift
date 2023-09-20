@@ -74,15 +74,15 @@ public class SmartStackView: UIStackView, StackableView {
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
-                    @StackBuilder stack: () -> [any StackableProp]) {
+                    stack: [(any StackableProp)?]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
             self.keyboardJump = keyboardJump
-            self.stack = stack()
+            self.stack = stack.compactMap { $0 }
         }
         
-        public static var initial: Props { .init(stack: { } ) }
+        public static var initial: Props { .init(stack: [] ) }
         
     }; public var props: Props = .initial {
         didSet {
