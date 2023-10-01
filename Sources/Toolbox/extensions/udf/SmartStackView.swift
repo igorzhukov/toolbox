@@ -32,35 +32,35 @@ public protocol StackableView {
     associatedtype T: StackableProp
     var props: T { get set }
 }
-
-@resultBuilder
-public struct StackBuilder {
-    
-    public static func buildExpression(_ x: (any StackableProp)?) -> StackableProp? {
-        x
-    }
-    
-    public static func buildExpression() -> StackableProp? {
-        nil
-    }
-    
-    static func buildBlock(_ components: (any StackableProp)?...) -> [any StackableProp] {
-        components.compactMap { $0 }
-    }
-    
-    static func buildEither(first component: [StackableProp]) -> [StackableProp] {
-        component
-    }
-    
-    static func buildEither(second component: [StackableProp]) -> [StackableProp] {
-        component
-    }
-    
-    static func buildOptional(_ component: [StackableProp]?) -> [StackableProp] {
-        component ?? []
-    }
-    
-}
+//
+//@resultBuilder
+//public struct StackBuilder {
+//    
+//    public static func buildExpression(_ x: (any StackableProp)?) -> StackableProp? {
+//        x
+//    }
+//    
+//    public static func buildExpression() -> StackableProp? {
+//        nil
+//    }
+//    
+//    static func buildBlock(_ components: (any StackableProp)?...) -> [any StackableProp] {
+//        components.compactMap { $0 }
+//    }
+//    
+//    static func buildEither(first component: [StackableProp]) -> [StackableProp] {
+//        component
+//    }
+//    
+//    static func buildEither(second component: [StackableProp]) -> [StackableProp] {
+//        component
+//    }
+//    
+//    static func buildOptional(_ component: [StackableProp]?) -> [StackableProp] {
+//        component ?? []
+//    }
+//    
+//}
 
 public class SmartStackView: UIStackView, StackableView {
 
