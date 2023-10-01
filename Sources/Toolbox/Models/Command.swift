@@ -58,6 +58,12 @@ public extension CommandWith where T == Void {
     }
 }
 
+public extension CommandWith {
+    static func printCommand() -> CommandWith {
+        return CommandWith { print($0) }
+    }
+}
+
 /// Allows commands to be compared and stored in sets and dicts.
 /// Uses `ObjectIdentifier` to distinguish between commands
 extension CommandWith: Hashable {
