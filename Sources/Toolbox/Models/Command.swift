@@ -59,7 +59,7 @@ public extension CommandWith where T == Void {
 }
 
 public extension CommandWith {
-    static func printCommand() -> CommandWith {
+    static var printCommand: CommandWith {
         return CommandWith { print($0) }
     }
 }
