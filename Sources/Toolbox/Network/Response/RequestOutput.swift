@@ -56,23 +56,10 @@ public extension RequestOutput where T == Void {
     
 }
 
-public extension RequestOutput where T == Any {
+public extension RequestOutput where T == Data {
     
-    func rawResponse() -> Single<Any> {
-        
-        return rxBottleNeck()
-            .map { (data, _) -> Any in
-                
-                var json: Any! = nil
-                do {
-                    json = try JSONSerialization.jsonObject(with: data, options: [])
-                } catch (let e) {
-                    throw AFError.responseSerializationFailed(reason: .jsonSerializationFailed(error: e))
-                }
-                
-                return json ?? []
-            }
-        
+    func rawResponse() async throws -> T {
+        try await bottleNeck().body
     }
     
 }
