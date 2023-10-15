@@ -1,6 +1,6 @@
 //
 //  UIColor+hex.swift
-//  Loadboard
+//  
 //
 //  Created  on 09.12.2021.
 //
@@ -32,7 +32,7 @@ public extension UIColor {
    rgb(red green blue) hexadecimal representation with alpha value 1.
    - Parameter rgb: An unsigned 32 bit integer. E.g 0xAA44CC.
    */
-  convenience init(hex rgb: UInt32) {
+  convenience init(relikeHex rgb: UInt32) {
     self.init(argb: (0xff000000 as UInt32) | rgb)
   }
     

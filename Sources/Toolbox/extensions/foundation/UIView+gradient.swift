@@ -74,8 +74,8 @@ public extension UIView {
     
     @discardableResult func addLinearGradient(fromHexColor from: UInt32, toHexColor: UInt32, horizontal: Bool = true) -> CALayer {
 
-        return addLinearGradient(fromColor: UIColor(hex: from),
-                                 toColor: UIColor(hex: toHexColor),
+        return addLinearGradient(fromColor: UIColor(relikeHex: from),
+                                 toColor: UIColor(relikeHex: toHexColor),
                                  horizontal: horizontal)
     }
 
