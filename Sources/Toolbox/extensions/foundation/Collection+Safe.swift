@@ -110,7 +110,7 @@ public extension Array where Element: Identifiable {
     
 }
 
-public extension Set {
+public extension SetAlgebra {
     
     mutating func invert(element: Element) {
         if contains(element) {
