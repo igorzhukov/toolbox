@@ -120,6 +120,12 @@ public extension SetAlgebra {
         }
     }
     
+    func inverted(element: Element) -> Self {
+        var copy = self
+        copy.invert(element: element)
+        return copy
+    }
+    
 }
 
 public extension Array {
