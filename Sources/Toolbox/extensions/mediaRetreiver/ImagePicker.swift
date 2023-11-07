@@ -77,7 +77,7 @@ public class PhotoPicker: NSObject {
                     self?.pick(allowsEditing: allowsEditing, pickerSourceType: .PhotoLibrary, presenter: presenter, ui: ui, successBlock: success)
                 },
                 fromCamera: UIImagePickerController.isSourceTypeAvailable(.camera) ? Command { [weak self] in
-                    self?.pick(allowsEditing: allowsEditing, pickerSourceType: .PhotoLibrary, presenter: presenter, ui: ui, successBlock: success)
+                    self?.pick(allowsEditing: allowsEditing, pickerSourceType: .Camera, presenter: presenter, ui: ui, successBlock: success)
                 } : nil)
             
             return
