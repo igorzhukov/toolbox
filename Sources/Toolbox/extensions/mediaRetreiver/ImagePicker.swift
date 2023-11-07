@@ -13,12 +13,16 @@ public class ImagePicker {
 
     private var completion: CommandWith<UIImage> = .nop
     
-    public static func present(on viewController: UIViewController,
+    public static func present(on presenter: UIViewController,
+                               ui: ImageSourcePicker = UIAlertController(),
                                processor: ImageProcessor? = nil,
                                allowsEditing: Bool = false,
                                completion: CommandWith<UIImage>) {
 
-        PhotoPicker.shared.pick(allowsEditing: allowsEditing, pickerSourceType: .CameraAndPhotoLibrary, controller: viewController) { [weak container = viewController] (originalPhoto, editedPhoto) in
+        PhotoPicker.shared.pick(allowsEditing: allowsEditing, 
+                                pickerSourceType: .CameraAndPhotoLibrary,
+                                presenter: presenter,
+                                ui: ui) { [weak container = presenter] (originalPhoto, editedPhoto) in
             
             let photo = editedPhoto ??  originalPhoto!
             
@@ -59,29 +63,22 @@ public class PhotoPicker: NSObject {
     var successBlock:((_ originalPhoto:UIImage?, _ editedPhoto: UIImage?) -> ())!
     
     public func pick(allowsEditing:Bool = false,
-              pickerSourceType: PickerSourceType = .PhotoLibrary,
-              controller: UIViewController,
-              successBlock success: @escaping ((_ originalPhoto:UIImage?, _ editedPhoto: UIImage?) -> ()))
+                     pickerSourceType: PickerSourceType = .PhotoLibrary,
+                     presenter: UIViewController,
+                     ui: ImageSourcePicker,
+                     successBlock success: @escaping ((_ originalPhoto:UIImage?, _ editedPhoto: UIImage?) -> ()))
     {
         
         if pickerSourceType == .CameraAndPhotoLibrary {
             
-            let alertController = UIAlertController(title: "Select", message: "Source Type", preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
-                print("User pressed Cancel")
-            }))
-            
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                alertController.addAction(UIAlertAction(title: "Take photo", style: .default, handler: { action in
-                    self.pick(allowsEditing: allowsEditing, pickerSourceType: .Camera, controller: controller, successBlock: success)
-                }))
-            }
-            
-            alertController.addAction(UIAlertAction(title: "Choose photo", style: .default, handler: { action in
-                self.pick(allowsEditing: allowsEditing, pickerSourceType: .PhotoLibrary, controller: controller, successBlock: success)
-            }))
-            
-            controller.present(alertController, animated: true, completion: nil)
+            ui.pickSource(
+                presenter: presenter,
+                fromGallery: Command { [weak self] in
+                    self?.pick(allowsEditing: allowsEditing, pickerSourceType: .PhotoLibrary, presenter: presenter, ui: ui, successBlock: success)
+                },
+                fromCamera: UIImagePickerController.isSourceTypeAvailable(.camera) ? Command { [weak self] in
+                    self?.pick(allowsEditing: allowsEditing, pickerSourceType: .PhotoLibrary, presenter: presenter, ui: ui, successBlock: success)
+                } : nil)
             
             return
             
@@ -115,7 +112,7 @@ public class PhotoPicker: NSObject {
         
         self.successBlock = success
         
-        controller.present(picker, animated: true, completion: nil)
+        presenter.present(picker, animated: true, completion: nil)
         
     }
     
@@ -139,6 +136,35 @@ extension PhotoPicker: UIImagePickerControllerDelegate {
         successBlock(originalPhoto, editedPhoto)
         
         picker.dismiss(animated: true, completion: nil)
+        
+    }
+    
+}
+
+public protocol ImageSourcePicker {
+    func pickSource(presenter: UIViewController, fromGallery: Command, fromCamera: Command?)
+}
+
+extension UIAlertController: ImageSourcePicker {
+    
+    public func pickSource(presenter: UIViewController, fromGallery: Command, fromCamera: Command?) {
+        
+        let alertController = UIAlertController(title: "Select", message: "Source Type", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            print("User pressed Cancel")
+        }))
+        
+        if let x = fromCamera {
+            alertController.addAction(UIAlertAction(title: "Take photo", style: .default, handler: { action in
+                x.perform()
+            }))
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Choose photo", style: .default, handler: { action in
+            fromGallery.perform()
+        }))
+        
+        presenter.present(alertController, animated: true, completion: nil)
         
     }
     
