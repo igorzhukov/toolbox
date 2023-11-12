@@ -32,6 +32,14 @@ public extension BehaviorRelay {
         }
     }
     
+    func mutate<T>( _ keyPath: WritableKeyPath<Element, T>, default d: T ) -> CommandWith<T?> {
+        return CommandWith { t in
+            var x = self.value
+            x[keyPath: keyPath] = t ?? d
+            self.accept(x)
+        }
+    }
+    
     func mutateCommand<T>( _ mutator: @escaping (inout Element, T) -> Void ) -> CommandWith<T> {
         return CommandWith { t in
             var x = self.value
