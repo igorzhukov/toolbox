@@ -94,8 +94,8 @@ public class SmartStackView: UIStackView, StackableView {
         
         self.spacing = props.spacing
         axis = props.axis
-        layoutMargins = .init(top: 0, left: props.margins,
-                              bottom: 0, right: props.margins)
+        layoutMargins.left = props.margins
+        layoutMargins.right = props.margins
         
         func superMap<T: StackableView, U: StackableProp>( view: inout T, prop: U) -> Bool {
             
