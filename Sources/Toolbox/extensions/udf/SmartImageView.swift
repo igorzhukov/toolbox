@@ -4,9 +4,9 @@
 import UIKit
 import RxSwift
 
-public class SmartImageView: UIImageView {
+public class SmartImageView: UIImageView, StackableView {
 
-    public struct Props {
+    public struct Props: StackableProp {
         
         public enum Image {
             case url(String?)
@@ -49,6 +49,16 @@ public class SmartImageView: UIImageView {
     
     public func prepareForReuse() {
         bag = DisposeBag()
+    }
+    
+}
+
+extension SmartImageView.Props {
+    
+    public var nibView: UIView {
+        let x = SmartImageView()
+        x.props = self
+        return x
     }
     
 }
