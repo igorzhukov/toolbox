@@ -9,9 +9,9 @@ import UIKit
 
 public extension UIView {
     
-    func registerTap(command: @escaping () -> Command) {
+    func registerTap(command: @escaping () -> Command?) {
         addGestureRecognizer(CommandTap(command: Command {
-            command().perform()
+            command()?.perform()
         }))
     }
     
