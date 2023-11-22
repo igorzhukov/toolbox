@@ -14,6 +14,9 @@ public struct LocalVideo {
     public let aspectRatio: CGFloat
     public let duration: TimeInterval
     
+    //https://stackoverflow.com/questions/57798968/didfinishpickingmediawithinfo-returns-different-url-in-ios-13
+    public let referenceToPHAsset: [UIImagePickerController.InfoKey : Any]
+    
 }
 
 public class VideoPicker {
@@ -75,7 +78,7 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
 
         let duration = AVURLAsset(url: videoURL).duration.seconds
         
-        successBlock( .init(url: videoURL, aspectRatio: aspectRaio, duration: duration) )
+        successBlock( .init(url: videoURL, aspectRatio: aspectRaio, duration: duration, referenceToPHAsset: info) )
     }
     
 }
