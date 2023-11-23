@@ -11,7 +11,13 @@ import AVFoundation
 public struct LocalVideo {
     
     public let url: URL
-    public let aspectRatio: CGFloat
+    public let height: CGFloat
+    public let width: CGFloat
+    
+    public var aspectRatio: CGFloat {
+        width / height
+    }
+    
     public let duration: TimeInterval
     
     //https://stackoverflow.com/questions/57798968/didfinishpickingmediawithinfo-returns-different-url-in-ios-13
@@ -74,11 +80,10 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
         }
         
         let size = track.naturalSize.applying(track.preferredTransform)
-        let aspectRaio: CGFloat = size.width / size.height
-
+        
         let duration = AVURLAsset(url: videoURL).duration.seconds
         
-        successBlock( .init(url: videoURL, aspectRatio: aspectRaio, duration: duration, referenceToPHAsset: info) )
+        successBlock( .init(url: videoURL, height: size.height, width: size.width, duration: duration, referenceToPHAsset: info) )
     }
     
 }
