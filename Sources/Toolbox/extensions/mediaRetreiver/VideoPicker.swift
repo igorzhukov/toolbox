@@ -5,6 +5,8 @@
 //  Created by Vladislav Soroka on 07.01.2023.
 //
 
+#if os(iOS)
+
 import UIKit
 import AVFoundation
 
@@ -60,6 +62,7 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
         x.delegate = self
         x.mediaTypes = ["public.movie"]
         x.videoQuality = .typeHigh
+        x.videoExportPreset = AVAssetExportPreset1280x720
         
         self.successBlock = success
         
@@ -87,3 +90,5 @@ public class VideoSharedPicker: NSObject, UIImagePickerControllerDelegate, UINav
     }
     
 }
+
+#endif

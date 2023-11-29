@@ -6,6 +6,8 @@
 //  Copyright ©. All rights reserved.
 //
 
+#if os(iOS)
+
 import UIKit
 import Kingfisher
 
@@ -169,3 +171,5 @@ extension UIAlertController: ImageSourcePicker {
     }
     
 }
+
+#endif

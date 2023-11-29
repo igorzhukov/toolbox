@@ -6,6 +6,8 @@
 //  Copyright © 2021. All rights reserved.
 //
 
+#if os(iOS)
+
 import UIKit
 import RxSwift
 
@@ -45,3 +47,5 @@ public extension Reactive where Base: UIView {
     }
     
 }
+
+#endif
