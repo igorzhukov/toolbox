@@ -169,7 +169,9 @@ public extension App {
     -> App.Store<T> {
         appConfig = s
         
+#if os(iOS)
         UIApplication.shared.applicationSupportsShakeToEdit = s.debugShakeCommands.count > 0
+#endif
         if RunScheme.debug && s.network != nil {
             NetworkLoggerBridge.enableNetworkingLogging()
         }

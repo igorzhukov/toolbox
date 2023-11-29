@@ -146,6 +146,7 @@ public class SmartStackView: UIStackView, StackableView {
         
         isLayoutMarginsRelativeArrangement = true
         
+#if os(iOS)
         rx.keyboadChange
             .map(\.height)
             .startWith(0)
@@ -165,6 +166,7 @@ public class SmartStackView: UIStackView, StackableView {
                 }
             }
             .disposed(by: rx.disposeBag)
+#endif
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismiss)))
         
