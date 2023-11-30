@@ -70,15 +70,26 @@ public class SmartStackView: UIStackView, StackableView {
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
         public let keyboardJump: Bool
+        public let border: Border?
         public let stack: [any StackableProp]
+        
+        public struct Border {
+            let width: CGFloat
+            let cornerRadius: CGFloat
+            let color: UIColor
+            
+            static var initial: Border { .init(width: 1, cornerRadius: 8, color: .lightGray) }
+        }
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
+                    border: Border? = nil,
                     stack: [(any StackableProp)?]) {
             self.spacing = spacing
             self.margins = margins
             self.axis = axis
             self.keyboardJump = keyboardJump
+            self.border = border
             self.stack = stack.compactMap { $0 }
         }
         
@@ -126,6 +137,10 @@ public class SmartStackView: UIStackView, StackableView {
                     addArrangedSubview(x)
                 }
         }
+        
+        layer.borderWidth = props.border?.width ?? 0
+        layer.cornerRadius = props.border?.cornerRadius ?? 0
+        layer.borderColor = props.border?.color.cgColor
         
     }
     
