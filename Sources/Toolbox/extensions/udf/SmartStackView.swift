@@ -77,8 +77,9 @@ public class SmartStackView: UIStackView, StackableView {
             public let width: CGFloat
             public let cornerRadius: CGFloat
             public let color: UIColor
+            public let margins: CGFloat
             
-            public static var initial: Border { .init(width: 1, cornerRadius: 8, color: .lightGray) }
+            public static var initial: Border { .init(width: 1, cornerRadius: 8, color: .lightGray, margins: 16) }
         }
         
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
@@ -107,6 +108,8 @@ public class SmartStackView: UIStackView, StackableView {
         axis = props.axis
         layoutMargins.left = props.margins
         layoutMargins.right = props.margins
+        layoutMargins.top = props.border?.margins ?? 0
+        layoutMargins.bottom = props.border?.margins ?? 0
         
         func superMap<T: StackableView, U: StackableProp>( view: inout T, prop: U) -> Bool {
             
@@ -172,7 +175,7 @@ public class SmartStackView: UIStackView, StackableView {
             .bind { [unowned self] (h, dh) in
                 guard self.props.keyboardJump else { return; }
                 
-                self.layoutMargins.bottom = h
+                self.layoutMargins.bottom = h + (props.border?.margins ?? 0)
                 if let sv = superview as? UIScrollView,
                     dh > 0 {
                     var co = sv.contentOffset
