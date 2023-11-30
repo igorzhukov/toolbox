@@ -74,6 +74,13 @@ public class SmartStackView: UIStackView, StackableView {
         public let stack: [any StackableProp]
         
         public struct Border {
+            public init(width: CGFloat, cornerRadius: CGFloat, color: UIColor, margins: CGFloat) {
+                self.width = width
+                self.cornerRadius = cornerRadius
+                self.color = color
+                self.margins = margins
+            }
+            
             public let width: CGFloat
             public let cornerRadius: CGFloat
             public let color: UIColor
