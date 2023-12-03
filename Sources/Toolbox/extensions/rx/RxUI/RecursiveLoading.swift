@@ -33,7 +33,7 @@ public func recursivelyLoad<DataType, T>(_ loadedSoFar: [DataType],
         
 }
 
-extension PrimitiveSequence{
+public extension PrimitiveSequence{
   func retry(maxAttempts: Int, delay: RxTimeInterval) -> PrimitiveSequence<Trait, Element> {
     return self.retry { errors in
       return errors.enumerated().flatMap{ (index, error) -> Observable<Int64> in
