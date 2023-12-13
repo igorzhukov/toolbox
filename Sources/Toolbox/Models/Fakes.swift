@@ -125,7 +125,7 @@ extension Double: Fakeble {
     
     public static func fake(min: Double, max: Double) -> Double {
         let normilizer = Double(Int.fake(bound: 100000)) / Double(100000)
-        return (max - min) * normilizer
+        return (max - min) * normilizer + min
     }
     
 }
@@ -138,7 +138,7 @@ extension CGFloat: Fakeble {
     
     public static func fake(min: CGFloat, max: CGFloat) -> CGFloat {
         let normilizer = CGFloat(Int.fake(bound: 100000)) / CGFloat(100000)
-        return (max - min) * normilizer
+        return (max - min) * normilizer + min
     }
 }
 
