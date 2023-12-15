@@ -84,7 +84,7 @@ public extension UIView {
 
         let dimmedView = UIView();
         dimmedView.backgroundColor = UIColor.black
-        dimmedView.alpha = 0.5;
+        dimmedView.alpha = appConfig.loaderBackgroundAlpha;
 
         let label = UILabel()
         label.textColor = .white

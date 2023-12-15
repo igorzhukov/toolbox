@@ -20,11 +20,13 @@ public enum App {
         public typealias CustomErrorMapper = (Error, Data) -> Error?
         
         public init(loaderImage: UIImage = UIImage(named: "spring_indicator")!,
+                    loaderBackgroundAlpha: CGFloat = 0.5,
                     customError: @escaping CustomErrorPresentation = { _ in nil },
                     debugShakeCommands: [NamedCommand] = [],
                     reduxActionDispatched: CommandWith<String> = .nop,
                     network: Network?) {
             self.loaderImage = loaderImage
+            self.loaderBackgroundAlpha = loaderBackgroundAlpha
             self.customError = customError
             self.debugShakeCommands = debugShakeCommands
             self.reduxActionDispatched = reduxActionDispatched
@@ -32,6 +34,7 @@ public enum App {
         }
         
         let loaderImage: UIImage
+        let loaderBackgroundAlpha: CGFloat
         let customError: CustomErrorPresentation
         let debugShakeCommands: [NamedCommand]
         
