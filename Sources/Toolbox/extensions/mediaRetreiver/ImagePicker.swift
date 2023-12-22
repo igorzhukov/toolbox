@@ -29,7 +29,7 @@ public class ImagePicker {
             let photo = editedPhoto ??  originalPhoto!
             
             if let p = processor {
-                container?.view.indicateProgress = true
+                
                 DispatchQueue.global().async {
                     let res = p.process(item: .image(photo),
                                         options: .init(nil))!
@@ -37,7 +37,6 @@ public class ImagePicker {
                     
                     DispatchQueue.main.async {
                         completion(with: x)
-                        container?.view.indicateProgress = false
                     }
                 }
                 
