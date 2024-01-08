@@ -255,7 +255,7 @@ extension UIViewController {
         return onLoadedView(observable: x)
     }
     
-    public func present(error: Error) {
+    public func present(error: Error, callback: Command = .nop) {
         
         if case .canceled? = error as? AppError {
             return
@@ -269,7 +269,7 @@ extension UIViewController {
             return showMessage(title: title, text: message)
         }
         
-        presentMessage(title: "Error", description: error.localizedDescription, callback: nil)
+        presentMessage(title: "Error", description: error.localizedDescription, callback: callback.perform)
     }
     
 }

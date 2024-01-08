@@ -14,14 +14,14 @@ public extension ObservableConvertibleType {
 
     private var identifier: String { return "com.rx.public extensions.erroridentifier" }
     
-    func silentCatch(handler: UIViewController?) -> Observable<Element> {
+    func silentCatch(handler: UIViewController?, callback: Command = .nop) -> Observable<Element> {
         
         return self.asObservable()
             .map { Swift.Result<Self.Element, Error>.success($0) }
             .catch { [weak h = handler] (error) -> Observable<Swift.Result<Element, Error>> in
             
                 DispatchQueue.main.async {
-                    h?.present(error: error)
+                    h?.present(error: error, callback: callback)
                 }
                 
                 return .empty()
