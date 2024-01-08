@@ -262,11 +262,11 @@ extension UIViewController {
         }
         
         if case .generic(let description)? = error as? AppError {
-            return presentMessage(title: "Error", description: description)
+            return presentMessage(title: "Error", description: description, callback: callback.perform)
         }
         
         if let (title, message) = appConfig.customError(error) {
-            return showMessage(title: title, text: message)
+            return showMessage(title: title, text: message, callback: callback.perform)
         }
         
         presentMessage(title: "Error", description: error.localizedDescription, callback: callback.perform)
