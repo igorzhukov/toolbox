@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIApplication {
+public extension UIApplication {
 
     var openURLCommand: CommandWith<URL> {
         CommandWith { url in
