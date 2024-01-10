@@ -10,7 +10,7 @@ import UIKit
 
 extension UIApplication {
 
-    var openURL: CommandWith<URL> {
+    var openURLCommand: CommandWith<URL> {
         CommandWith { url in
             self.open(url, options: [:], completionHandler: nil)
         }
