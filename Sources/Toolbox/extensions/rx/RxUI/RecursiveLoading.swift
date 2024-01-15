@@ -16,7 +16,7 @@ public func recursivelyLoad<DataType, T>(_ loadedSoFar: [DataType],
         .asObservable()
         .flatMap { newBatch -> Observable<[DataType]> in
             
-            if newBatch.isEmpty { return .empty() }
+            if newBatch.isEmpty { return .just([]) }
             
             let running = loadedSoFar + newBatch
             
