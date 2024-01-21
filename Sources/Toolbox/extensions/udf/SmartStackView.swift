@@ -72,6 +72,7 @@ public class SmartStackView: UIStackView, StackableView {
         public var alignment: UIStackView.Alignment = .fill
         public let keyboardJump: Bool
         public let border: Border?
+        public let backgroundColor: UIColor?
         public let stack: [any StackableProp]
         
         public struct Border {
@@ -94,6 +95,7 @@ public class SmartStackView: UIStackView, StackableView {
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
                     alignment: UIStackView.Alignment = .fill,
                     border: Border? = nil,
+                    backgroundColor: UIColor? = nil,
                     stack: [(any StackableProp)?]) {
             self.spacing = spacing
             self.margins = margins
@@ -101,6 +103,7 @@ public class SmartStackView: UIStackView, StackableView {
             self.alignment = alignment
             self.keyboardJump = keyboardJump
             self.border = border
+            self.backgroundColor = backgroundColor
             self.stack = stack.compactMap { $0 }
         }
         
@@ -121,6 +124,8 @@ public class SmartStackView: UIStackView, StackableView {
         layoutMargins.right = props.margins
         layoutMargins.top = props.border?.margins ?? 0
         layoutMargins.bottom = props.border?.margins ?? 0
+        
+        backgroundColor = props.backgroundColor ?? .clear
         
         func superMap<T: StackableView, U: StackableProp>( view: inout T, prop: U) -> Bool {
             
