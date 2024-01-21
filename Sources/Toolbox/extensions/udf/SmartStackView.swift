@@ -70,6 +70,7 @@ public class SmartStackView: UIStackView, StackableView {
         public var margins: CGFloat = 0
         public var axis: NSLayoutConstraint.Axis = .vertical
         public var alignment: UIStackView.Alignment = .fill
+        public var distribution: UIStackView.Distribution = .fill
         public let keyboardJump: Bool
         public let border: Border?
         public let backgroundColor: UIColor?
@@ -94,6 +95,7 @@ public class SmartStackView: UIStackView, StackableView {
         public init(spacing: CGFloat = 8, margins: CGFloat = 0,
                     axis: NSLayoutConstraint.Axis = .vertical, keyboardJump: Bool = false,
                     alignment: UIStackView.Alignment = .fill,
+                    distribution: UIStackView.Distribution = .fill,
                     border: Border? = nil,
                     backgroundColor: UIColor? = nil,
                     stack: [(any StackableProp)?]) {
@@ -101,6 +103,7 @@ public class SmartStackView: UIStackView, StackableView {
             self.margins = margins
             self.axis = axis
             self.alignment = alignment
+            self.distribution = distribution
             self.keyboardJump = keyboardJump
             self.border = border
             self.backgroundColor = backgroundColor
@@ -120,6 +123,7 @@ public class SmartStackView: UIStackView, StackableView {
         self.spacing = props.spacing
         axis = props.axis
         alignment = props.alignment
+        distribution = props.distribution
         layoutMargins.left = props.margins
         layoutMargins.right = props.margins
         layoutMargins.top = props.border?.margins ?? 0
