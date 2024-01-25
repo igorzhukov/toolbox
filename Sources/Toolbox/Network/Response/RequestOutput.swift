@@ -73,7 +73,7 @@ public extension RequestOutput {
             return try await withCheckedThrowingContinuation { continuation in
                 request
                     .validate()
-                    .responseData(emptyResponseCodes: [200, 204, 205]) { (response: AFDataResponse<Data>) in
+                    .responseData(emptyResponseCodes: [200, 204, 205, 401]) { (response: AFDataResponse<Data>) in
 
                         if let e = response.error {
                             
