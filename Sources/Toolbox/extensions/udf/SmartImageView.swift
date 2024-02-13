@@ -67,7 +67,9 @@ public class SmartImageView: UIImageView, StackableView {
         case .url(let u):
             rx.download(url: u, placeholder: im)
                 .subscribe(onCompleted: { [weak self] in
-                    self?.label.isHidden = true
+                    if self?.image != nil {
+                        self?.label.isHidden = true
+                    }
                 })
                 .disposed(by: bag)
             
