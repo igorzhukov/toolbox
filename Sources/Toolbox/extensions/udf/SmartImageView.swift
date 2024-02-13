@@ -69,6 +69,7 @@ public class SmartImageView: UIImageView, StackableView {
                 .subscribe(onCompleted: { [weak self] in
                     if self?.image != nil {
                         self?.label.isHidden = true
+                        self?.layer.borderWidth = 0
                     }
                 })
                 .disposed(by: bag)
