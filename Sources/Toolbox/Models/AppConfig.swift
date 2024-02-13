@@ -21,12 +21,14 @@ public enum App {
         
         public init(loaderImage: UIImage = UIImage(named: "spring_indicator")!,
                     loaderBackgroundAlpha: CGFloat = 0.5,
+                    initialsStyle: InitialsStyle? = nil,
                     customError: @escaping CustomErrorPresentation = { _ in nil },
                     debugShakeCommands: [NamedCommand] = [],
                     reduxActionDispatched: CommandWith<String> = .nop,
                     network: Network?) {
             self.loaderImage = loaderImage
             self.loaderBackgroundAlpha = loaderBackgroundAlpha
+            self.initialsStyle = initialsStyle ?? .init(font: .systemFont(ofSize: 14), color: .black)
             self.customError = customError
             self.debugShakeCommands = debugShakeCommands
             self.reduxActionDispatched = reduxActionDispatched
@@ -35,6 +37,7 @@ public enum App {
         
         let loaderImage: UIImage
         let loaderBackgroundAlpha: CGFloat
+        let initialsStyle: InitialsStyle
         let customError: CustomErrorPresentation
         let debugShakeCommands: [NamedCommand]
         
@@ -42,6 +45,16 @@ public enum App {
         let reduxActionDispatched: CommandWith<String>
         
         let network: Network?
+        
+        public struct InitialsStyle {
+            public init(font: UIFont, color: UIColor) {
+                self.font = font
+                self.color = color
+            }
+
+            let font: UIFont
+            let color: UIColor
+        }
         
         public struct Network {
             public init(

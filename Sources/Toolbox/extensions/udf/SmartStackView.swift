@@ -144,6 +144,7 @@ public class SmartStackView: UIStackView, StackableView {
         var binded = false
         for (view, prop) in zip(arrangedSubviews, props.stack) {
             guard var x = view as? any StackableView else {
+                print("SmartStack Warning, \(view.self) is not a StackableView, can't apply diffing policy. Will reload the whole stack at every render")
                 binded = false
                 break;
             }

@@ -13,9 +13,14 @@ public class SmartImageView: UIImageView, StackableView {
             case value(UIImage)
         };
         public let image: Image
-        public var placeholder: UIImage? = nil
         
-        public init(image: SmartImageView.Props.Image, placeholder: UIImage? = nil) {
+        public enum Placeholder {
+            case image(UIImage)
+            case initials(String)
+        };
+        public var placeholder: Placeholder? = nil
+        
+        public init(image: SmartImageView.Props.Image, placeholder: Placeholder? = nil) {
             self.image = image
             self.placeholder = placeholder
         }
@@ -30,20 +35,54 @@ public class SmartImageView: UIImageView, StackableView {
     
     func render() {
         
-        image = props.placeholder
+        var im: UIImage?
+        switch props.placeholder {
+        case .image(let x):
+            im = x
+            layer.borderColor = UIColor.clear.cgColor
+            layer.borderWidth = 0
+            label.isHidden = true
+            
+        case .initials(let x):
+            im = nil
+            layer.borderColor = appConfig.initialsStyle.color.cgColor
+            layer.borderWidth = 1
+            label.isHidden = false
+            label.text = x.split(separator: " ")
+                .compactMap { $0.first.map(String.init) }
+                .joined()
+                .uppercased()
+            
+        case .none:
+            im = nil
+            layer.borderColor = UIColor.clear.cgColor
+            layer.borderWidth = 0
+            label.isHidden = true
+        }
         
         switch props.image {
         case .value(let i):
             image = i
             
         case .url(let u):
-            rx.download(url: u, placeholder: props.placeholder)
-                .subscribe()
+            rx.download(url: u, placeholder: im)
+                .subscribe(onCompleted: { [weak self] in
+                    self?.label.isHidden = true
+                })
                 .disposed(by: bag)
             
         }
         
     }
+    
+    lazy var label: UILabel = {
+        let x = UILabel()
+        x.font = appConfig.initialsStyle.font
+        x.textColor = appConfig.initialsStyle.color
+        x.textAlignment = .center
+        embed(view: x)
+        return x
+    }()
     
     var bag = DisposeBag()
     

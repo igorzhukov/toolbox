@@ -119,6 +119,7 @@ public extension UIView {
 import SnapKit
 public extension UIView {
     
+    @discardableResult
     func embed<T: UIView>(view: T) -> T {
         addSubview(view)
         view.snp.makeConstraints { make in
