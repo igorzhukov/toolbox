@@ -52,6 +52,12 @@ public extension Array where Element: Identifiable {
             append(element)
         }
     }
+ 
+    func next(after: Element) -> Element? {
+        guard let i = element(match: after.id)?.index else { return nil }
+        
+        return self[safe: i+1]
+    }
     
 }
 
