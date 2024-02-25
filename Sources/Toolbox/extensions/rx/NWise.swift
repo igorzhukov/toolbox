@@ -80,7 +80,7 @@ public struct FullDiff<T: Sequence>: Equatable where T.Element: Identifiable & E
 
 public extension ObservableType where Element: Sequence & ExpressibleByArrayLiteral, Element.Element: Equatable & Identifiable {
     
-    func diff( property: @escaping (Element.Element) -> Int ) -> Observable<FullDiff<Element>> {
+    func diff(  ) -> Observable<FullDiff<Element>> {
         
         return self.scan([]) { acc, item in Array((acc + [item]).suffix(2)) }
             .map { x in

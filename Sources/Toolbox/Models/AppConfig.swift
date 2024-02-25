@@ -136,6 +136,20 @@ public enum App {
             }
             
         }
+        
+        public func dispatchCommand<A: ReduxAction>
+        (action: A, actor: CustomStringConvertible? = nil) -> Command where A.T == T  {
+            return Command {
+                self.dispatch(action: action, actor: actor)
+            }
+        }
+        
+        public func dispatchCommand<A: ReduxAction>
+        (actor: CustomStringConvertible? = nil) -> CommandWith<A> where A.T == T  {
+            return CommandWith { action in
+                self.dispatch(action: action, actor: actor)
+            }
+        }
 
     }
     
