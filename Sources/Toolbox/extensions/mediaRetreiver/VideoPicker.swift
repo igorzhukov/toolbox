@@ -25,6 +25,14 @@ public struct LocalVideo {
     //https://stackoverflow.com/questions/57798968/didfinishpickingmediawithinfo-returns-different-url-in-ios-13
     public let referenceToPHAsset: [UIImagePickerController.InfoKey : Any]
     
+    public init(url: URL, height: CGFloat, width: CGFloat, duration: TimeInterval, referenceToPHAsset: [UIImagePickerController.InfoKey : Any]) {
+        self.url = url
+        self.height = height
+        self.width = width
+        self.duration = duration
+        self.referenceToPHAsset = referenceToPHAsset
+    }
+    
 }
 
 public class VideoPicker {
