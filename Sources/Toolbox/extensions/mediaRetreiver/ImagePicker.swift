@@ -17,12 +17,13 @@ public class ImagePicker {
     
     public static func present(on presenter: UIViewController,
                                ui: ImageSourcePicker = UIAlertController(),
+                               source: PhotoPicker.PickerSourceType = .CameraAndPhotoLibrary,
                                processor: ImageProcessor? = nil,
                                allowsEditing: Bool = false,
                                completion: CommandWith<UIImage>) {
 
         PhotoPicker.shared.pick(allowsEditing: allowsEditing, 
-                                pickerSourceType: .CameraAndPhotoLibrary,
+                                pickerSourceType: source,
                                 presenter: presenter,
                                 ui: ui) { [weak container = presenter] (originalPhoto, editedPhoto) in
             
