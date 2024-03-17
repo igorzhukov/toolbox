@@ -26,7 +26,7 @@ public class ImagePicker {
                                 pickerSourceType: source,
                                 presenter: presenter,
                                 ui: ui) { [weak container = presenter] (originalPhoto, editedPhoto) in
-            
+
             let photo = editedPhoto ??  originalPhoto!
             
             if let p = processor {

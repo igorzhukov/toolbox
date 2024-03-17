@@ -142,15 +142,17 @@ public class SmartStackView: UIStackView, StackableView {
         }
         
         var binded = false
-        for (view, prop) in zip(arrangedSubviews, props.stack) {
-            guard var x = view as? any StackableView else {
-                print("SmartStack Warning, \(view.self) is not a StackableView, can't apply diffing policy. Will reload the whole stack at every render")
-                binded = false
-                break;
+        if arrangedSubviews.count == props.stack.count {
+            for (view, prop) in zip(arrangedSubviews, props.stack) {
+                guard var x = view as? any StackableView else {
+                    print("SmartStack Warning, \(view.self) is not a StackableView, can't apply diffing policy. Will reload the whole stack at every render")
+                    binded = false
+                    break;
+                }
+                
+                binded = superMap(view: &x, prop: prop)
+                if !binded { break; }
             }
-            
-            binded = superMap(view: &x, prop: prop)
-            if !binded { break; }
         }
         
         if binded == false {
