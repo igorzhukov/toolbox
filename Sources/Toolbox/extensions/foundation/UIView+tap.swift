@@ -37,6 +37,8 @@ class CommandTap: UITapGestureRecognizer {
         self.commandObject = .init(command: command)
         
         super.init(target: commandObject, action: #selector(CommandObject.perform as (CommandObject) -> () -> ()))
+        
+        cancelsTouchesInView = false
     }
     
 }
