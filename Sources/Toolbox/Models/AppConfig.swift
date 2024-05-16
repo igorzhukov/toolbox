@@ -93,6 +93,7 @@ public enum App {
             Observable.merge([
                 NotificationCenter.default.rx.notification(UIApplication.didEnterBackgroundNotification),
                 NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification),
+                NotificationCenter.default.rx.notification(UIApplication.didReceiveMemoryWarningNotification)
             ])
                 .subscribe(onNext: { (_) in
                     self.diskStore.value = self.memmoryStore.value
