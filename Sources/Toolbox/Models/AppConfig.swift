@@ -99,13 +99,13 @@ public enum App {
                     self.diskStore.value = self.memmoryStore.value
                 })
             
-            if RunScheme.debug {
-                ///debugger termination might not trigger any of AppState saving notifications.
-                _ =
-                memmoryStore.subscribe(onNext: { x in
-                    self.diskStore.value = x
-                })
-            }
+//            if RunScheme.debug {
+//                ///debugger termination might not trigger any of AppState saving notifications.
+//                _ =
+//                memmoryStore.subscribe(onNext: { x in
+//                    self.diskStore.value = x
+//                })
+//            }
         }
         
         var diskStore: Setting<T>
