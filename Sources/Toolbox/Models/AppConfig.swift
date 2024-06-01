@@ -85,7 +85,7 @@ public enum App {
     public class Store<T: AppStateT> {
         
         public init(appStateSettingsKey: String,
-                    customSaveTrigger: @autoclosure () -> Observable<Void> = .never()) {
+                    customSaveTrigger: (Observable<T>) -> Observable<Void> = { _ in .never() }) {
             diskStore = Setting(key: appStateSettingsKey,
                                 initialValue: .default)
             memmoryStore = .init(value: diskStore.value)
@@ -95,7 +95,8 @@ public enum App {
                 NotificationCenter.default.rx.notification(UIApplication.didEnterBackgroundNotification),
                 NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification),
                 NotificationCenter.default.rx.notification(UIApplication.didReceiveMemoryWarningNotification),
-                customSaveTrigger().map { _ in .init(name: UIApplication.willTerminateNotification) }
+                customSaveTrigger(memmoryStore.asObservable())
+                    .map { _ in .init(name: UIApplication.willTerminateNotification) }
             ])
                 .subscribe(onNext: { (_) in
                     self.diskStore.value = self.memmoryStore.value
