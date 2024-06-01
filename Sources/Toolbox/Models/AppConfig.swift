@@ -85,7 +85,14 @@ public enum App {
     public class Store<T: AppStateT> {
         
         public init(appStateSettingsKey: String,
-                    customSaveTrigger: (Observable<T>) -> Observable<Void> = { _ in .never() }) {
+                    customSaveTrigger: (Observable<T>) -> Observable<Void> = { m in
+            if RunScheme.debug {
+                ///debugger termination might not trigger any of AppState saving notifications.
+                return m.asObservable().map { _ in }
+            } else {
+                return .never()
+            }
+        }) {
             diskStore = Setting(key: appStateSettingsKey,
                                 initialValue: .default)
             memmoryStore = .init(value: diskStore.value)
@@ -102,13 +109,6 @@ public enum App {
                     self.diskStore.value = self.memmoryStore.value
                 })
             
-//            if RunScheme.debug {
-//                ///debugger termination might not trigger any of AppState saving notifications.
-//                _ =
-//                memmoryStore.subscribe(onNext: { x in
-//                    self.diskStore.value = x
-//                })
-//            }
         }
         
         var diskStore: Setting<T>
