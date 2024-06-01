@@ -84,7 +84,8 @@ public enum App {
     
     public class Store<T: AppStateT> {
         
-        public init(appStateSettingsKey: String) {
+        public init(appStateSettingsKey: String,
+                    customSaveTrigger: @autoclosure () -> Observable<Void> = .never()) {
             diskStore = Setting(key: appStateSettingsKey,
                                 initialValue: .default)
             memmoryStore = .init(value: diskStore.value)
@@ -93,7 +94,8 @@ public enum App {
             Observable.merge([
                 NotificationCenter.default.rx.notification(UIApplication.didEnterBackgroundNotification),
                 NotificationCenter.default.rx.notification(UIApplication.willTerminateNotification),
-                NotificationCenter.default.rx.notification(UIApplication.didReceiveMemoryWarningNotification)
+                NotificationCenter.default.rx.notification(UIApplication.didReceiveMemoryWarningNotification),
+                customSaveTrigger().map { _ in .init(name: UIApplication.willTerminateNotification) }
             ])
                 .subscribe(onNext: { (_) in
                     self.diskStore.value = self.memmoryStore.value
