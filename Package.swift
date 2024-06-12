@@ -15,7 +15,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/ReactiveX/RxSwift", branch: "main"),
         .package(url: "https://github.com/SnapKit/SnapKit", branch: "main"),
-        .package(url: "https://github.com/onevcat/Kingfisher", branch: "master"),
+        .package(url: "https://github.com/onevcat/Kingfisher", from: "7.10.2"),
         .package(url: "https://github.com/Alamofire/Alamofire", branch: "master"),
     ],
     targets: [
