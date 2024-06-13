@@ -176,7 +176,7 @@ extension App.Store {
         
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "HH:mm:ss"
-        var str = initialStateDescription
+        var str = "InitialState:\n\(initialStateDescription)\n"
         queue.sync {
             
             for (index, (action, date, actor)) in actions.enumerated() {
