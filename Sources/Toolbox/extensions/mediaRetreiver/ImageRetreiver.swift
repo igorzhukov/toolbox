@@ -14,6 +14,7 @@ import Kingfisher
 
 public extension Reactive where Base: UIImageView {
     
+    @MainActor
     func download(url: String?, size: CGSize? = nil, placeholder: UIImage? = nil) -> Observable<Void> {
         
         return Observable<Void>.create { (subscriber) -> Disposable in
