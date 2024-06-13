@@ -96,6 +96,7 @@ public enum App {
             diskStore = Setting(key: appStateSettingsKey,
                                 initialValue: .default)
             memmoryStore = .init(value: diskStore.value)
+            initialStateDescription = "\(diskStore.value)"
             
             let _ =
             Observable.merge([
@@ -114,6 +115,7 @@ public enum App {
         var diskStore: Setting<T>
         let memmoryStore: BehaviorRelay<T>
         
+        let initialStateDescription: String
         var actions: [(String, Date, String?)] = []
 
         private let queue = DispatchQueue(label: "AppState mutation queue")
@@ -174,7 +176,7 @@ extension App.Store {
         
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "HH:mm:ss"
-        var str = ""
+        var str = initialStateDescription
         queue.sync {
             
             for (index, (action, date, actor)) in actions.enumerated() {
