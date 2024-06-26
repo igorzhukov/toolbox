@@ -101,32 +101,40 @@ public enum App {
 
         private let queue = DispatchQueue(label: "AppState mutation queue")
         
-        public func dispatch<A: ReduxAction>
-        (action: A, actor: CustomStringConvertible? = nil) where A.T == T {
-            
+        // Synchronous dispatch method
+        public func dispatch<A: ReduxAction>(action: A, actor: CustomStringConvertible? = nil) where A.T == T {
             queue.async { [unowned self] in
-                
-                var dscr = "\(action)"
-                if let x = actor?.description {
-                    dscr.append(" by \(x) actor")
-                }
-                appConfig.reduxActionDispatched(with: dscr)
-                actions.append((dscr, Date(), actor?.description))
-                
-                var newState = memmoryStore.value
-                action.apply(to: &newState)
-                
-                if newState != memmoryStore.value {
-                    memmoryStore.accept(newState)
-                }
-                
+                self.performDispatch(action: action, actor: actor)
             }
-            
         }
 
+        // Asynchronous dispatch method
+        public func dispatch<A: ReduxAction>(action: A, actor: CustomStringConvertible? = nil) async where A.T == T {
+            await withCheckedContinuation { continuation in
+                queue.async { [unowned self] in
+                    self.performDispatch(action: action, actor: actor)
+                    continuation.resume()
+                }
+            }
+        }
+
+        // Private helper function to perform the dispatch logic
+        private func performDispatch<A: ReduxAction>(action: A, actor: CustomStringConvertible?) where A.T == T {
+            var dscr = "\(action)"
+            if let x = actor?.description {
+                dscr.append(" by \(x) actor")
+            }
+            appConfig.reduxActionDispatched(with: dscr)
+            actions.append((dscr, Date(), actor?.description))
+            
+            var newState = memmoryStore.value
+            action.apply(to: &newState)
+            
+            if newState != memmoryStore.value {
+                memmoryStore.accept(newState)
+            }
+        }
     }
-    
-    
 }
 
 extension App.Store {

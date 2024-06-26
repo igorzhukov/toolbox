@@ -22,8 +22,14 @@ public protocol ReduxAction {
 
 public extension ReduxAction {
     
+    // Synchronous dispatch method
     func dispatch(into store: App.Store<T>) {
         store.dispatch(action: self)
+    }
+    
+    // Asynchronous dispatch method
+    func dispatch(into store: App.Store<T>) async {
+        await store.dispatch(action: self)
     }
     
 }
