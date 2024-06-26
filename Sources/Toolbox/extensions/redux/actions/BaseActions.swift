@@ -28,7 +28,7 @@ public extension ReduxAction {
     }
     
     // Asynchronous dispatch method
-    func dispatch(into store: App.Store<T>) async {
+    func dispatchAsync(into store: App.Store<T>) async {
         await store.dispatch(action: self)
     }
     
