@@ -188,12 +188,11 @@ public extension Encodable where Self : UserDefaultsStorable {
         let x: Data
         do {
             x = try JSONEncoder().encode(self)
+            UserDefaults.standard.setValue(x, forKey: key)
         }
         catch(let e) {
-            fatalError("Error encoding object \(self). Details \(e)")
+            assert(false, "Error encoding object \(self) for key \(key): \(e.localizedDescription)")
         }
-        
-        UserDefaults.standard.setValue(x, forKey: key)
     }
     
 }
@@ -201,22 +200,22 @@ public extension Encodable where Self : UserDefaultsStorable {
 public extension Decodable where Self: UserDefaultsStorable {
     
     init?(key: String) {
-        
-        guard let x = UserDefaults.standard.data(forKey: key) else {
-            return nil }
-            
-        
-        let t: Self
-        do {
-            t = try JSONDecoder().decode(Self.self, from: x)
-        }
-        catch(let e) {
-            fatalError("Error decoding object \(x) for key \(key). Details \(e)")
-        }
-        
-        self = t
-        
-    }
+         guard let data = UserDefaults.standard.data(forKey: key) else {
+             return nil
+         }
+         
+         let decodedObject: Self
+         do {
+             decodedObject = try JSONDecoder().decode(Self.self, from: data)
+         } catch let error {
+             // Assert in debug builds, but do not crash in production
+             assert(false, "Error decoding object for key \(key): \(error.localizedDescription)")
+             
+             return nil
+         }
+         
+         self = decodedObject
+     }
     
 }
 
